@@ -8,7 +8,7 @@ var files = [
 	{'dir':'I', 'num':6}, {'dir':'J', 'num':4}, {'dir':'K', 'num':5}, {'dir':'L', 'num':9}, {'dir':'M', 'num':1},
 	{'dir':'N', 'num':2}, {'dir':'O', 'num':1}, {'dir':'P', 'num':9}, {'dir':'Q', 'num':0}, {'dir':'R', 'num':5},
 	{'dir':'S', 'num':6}, {'dir':'T', 'num':7}, {'dir':'U', 'num':5},	{'dir':'V', 'num':6}, {'dir':'W', 'num':3},
-	{'dir':'X', 'num':5}, {'dir':'Y', 'num':8}, {'dir':'Z', 'num':4}, {'dir':'test', 'num':6}
+	{'dir':'X', 'num':5}, {'dir':'Y', 'num':8}, {'dir':'Z', 'num':4}, {'dir':'test', 'num':8}
 ];
 
 var datas = [];
