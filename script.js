@@ -8,10 +8,11 @@ var files = [
 	{'dir':'I', 'num':6}, {'dir':'J', 'num':4}, {'dir':'K', 'num':5}, {'dir':'L', 'num':9}, {'dir':'M', 'num':1},
 	{'dir':'N', 'num':2}, {'dir':'O', 'num':1}, {'dir':'P', 'num':9}, {'dir':'Q', 'num':0}, {'dir':'R', 'num':5},
 	{'dir':'S', 'num':6}, {'dir':'T', 'num':7}, {'dir':'U', 'num':5},	{'dir':'V', 'num':6}, {'dir':'W', 'num':3},
-	{'dir':'X', 'num':5}, {'dir':'Y', 'num':8}, {'dir':'Z', 'num':4}
+	{'dir':'X', 'num':5}, {'dir':'Y', 'num':8}, {'dir':'Z', 'num':4}, {'dir':'test', 'num':1}
 ];
 
 var datas = [];
+var tests = [];
 
 function readDatas(cb) {
 	var fileNames = [];
@@ -36,7 +37,12 @@ function readDatas(cb) {
 					}
 					obj.pixel = pixel;
 					obj.class = fileName[8];
-					datas.push(obj);
+					if (fileName[8]=='t') {
+						obj.class = fileName[8];
+						tests.push(obj);
+					} else {
+						datas.push(obj);
+					}
 					callback();
 				});
 			} else {
@@ -48,11 +54,22 @@ function readDatas(cb) {
 		if (err) {
 			console.log(err);
 		} else {
-			console.log(datas.length);
-			// open testdata
-
-			// do training
-
+			var result = [];
+			for (var i=0; i<tests.length; i++) {
+				for (var j=0; j<datas.length; j++) {
+					var obj = {};
+					obj.distance = 0;
+					obj.class = datas[j].class;
+					for (var k=0; k<50*50; k++) {
+						obj.distance += (Math.abs(tests[i].pixel[k] - datas[j].pixel[k]));
+					}
+					result.push(obj);
+				}
+				result.sort(function(a, b) {
+					return parseFloat(a.distance) - parseFloat(b.distance);
+				});
+				console.log(result);
+			}
 		}
 	});
 }
