@@ -8,11 +8,12 @@ var files = [
 	{'dir':'I', 'num':6}, {'dir':'J', 'num':4}, {'dir':'K', 'num':5}, {'dir':'L', 'num':9}, {'dir':'M', 'num':1},
 	{'dir':'N', 'num':2}, {'dir':'O', 'num':1}, {'dir':'P', 'num':9}, {'dir':'Q', 'num':0}, {'dir':'R', 'num':5},
 	{'dir':'S', 'num':6}, {'dir':'T', 'num':7}, {'dir':'U', 'num':5},	{'dir':'V', 'num':6}, {'dir':'W', 'num':3},
-	{'dir':'X', 'num':5}, {'dir':'Y', 'num':8}, {'dir':'Z', 'num':4}, {'dir':'test', 'num':1}
+	{'dir':'X', 'num':5}, {'dir':'Y', 'num':8}, {'dir':'Z', 'num':4}, {'dir':'test', 'num':6}
 ];
 
 var datas = [];
 var tests = [];
+var K = 3;
 
 function readDatas(cb) {
 	var fileNames = [];
@@ -37,8 +38,10 @@ function readDatas(cb) {
 					}
 					obj.pixel = pixel;
 					obj.class = fileName[8];
+
 					if (fileName[8]=='t') {
-						obj.class = fileName[8];
+						obj.class = "";
+						obj.order = parseInt(fileName[13]);
 						tests.push(obj);
 					} else {
 						datas.push(obj);
@@ -46,7 +49,7 @@ function readDatas(cb) {
 					callback();
 				});
 			} else {
-				console.log("error open an image");
+				if (fileName[8]!='t') console.log("error open an image");
 				callback();
 			}
 		});
@@ -54,8 +57,11 @@ function readDatas(cb) {
 		if (err) {
 			console.log(err);
 		} else {
-			var result = [];
+			tests.sort(function(a, b) {
+				return parseFloat(a.order) - parseFloat(b.order);
+			});
 			for (var i=0; i<tests.length; i++) {
+				var result = [];
 				for (var j=0; j<datas.length; j++) {
 					var obj = {};
 					obj.distance = 0;
@@ -68,7 +74,21 @@ function readDatas(cb) {
 				result.sort(function(a, b) {
 					return parseFloat(a.distance) - parseFloat(b.distance);
 				});
-				console.log(result);
+				// store frequency
+				var counter = [];
+				var maks = 0;
+				var predictedChar;
+				for (var j=0; j<=100; j++) counter.push(0);
+				for (var j=0; j<K; j++) {
+					var idx = result[j].class.charCodeAt(0) - "0".charCodeAt(0);
+					counter[idx]++;
+					if (counter[idx]>maks) {
+						maks = counter[idx];
+						predictedChar = result[j].class;
+					}
+					// console.log(result[j].class.charCodeAt(0) - "0".charCodeAt(0));
+				}
+				console.log(predictedChar);
 			}
 		}
 	});
